@@ -1,0 +1,64 @@
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(9,8,7,6,5,4);
+
+#define Trig 3
+#define Echo 2
+
+int den = 12;
+const unsigned long SECOND = 1000;    
+const unsigned long HOUR = 3600*SECOND;
+unsigned long time;
+
+void setup() {
+  pinMode(den,OUTPUT);
+  pinMode(Trig, OUTPUT);    
+  pinMode(Echo, INPUT);
+  time = millis();
+  lcd.begin(16,2);
+  lcd.blink();
+  delay(1000);
+  lcd.setCursor(0, 0);      
+  lcd.print("NHO UONG DU NUOC"); 
+  lcd.setCursor(4, 1);  
+  lcd.print("BAN NHE");   
+  delay(2000);
+  lcd.clear();
+}
+
+void loop() {
+  digitalWrite(Trig, LOW);  
+  delayMicroseconds(2);
+  digitalWrite(Trig, HIGH); 
+  delayMicroseconds(5);   
+  digitalWrite(Trig, LOW);  
+  
+  long t = pulseIn(Echo, HIGH);
+  long cm = t/2/29.412;
+  
+  if (cm<=8) {
+    lcd.setCursor(3,0);
+    lcd.print("DA DU NUOC"); 
+    delay(1000);
+    lcd.clear();
+    lcd.setCursor(0,0);   
+    lcd.print("XIN BAN HAY UONG"); 
+    lcd.setCursor(4,1);   
+    lcd.print("HET NUOC");  
+    delay(6*SECOND);    
+    lcd.clear();
+  }
+  else {
+    digitalWrite(den, HIGH);
+    lcd.setCursor(2,0);   
+    lcd.print("KHONG DU NUOC");   
+    delay(2000);
+    lcd.clear();
+    lcd.setCursor(5,0);   
+    lcd.print("HAY ROT");   
+    lcd.setCursor(4,1);   
+    lcd.print("THEM NUOC");
+    digitalWrite(den, LOW);
+    delay(2000);
+    lcd.clear();
+  }
+}
