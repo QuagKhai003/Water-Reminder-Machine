@@ -1,2 +1,2 @@
 # Water-Reminder-Machine
-This project is not only done by myself
+This is a group project of 5 people
